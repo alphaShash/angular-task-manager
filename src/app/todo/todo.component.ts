@@ -18,17 +18,19 @@ export class TodoComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
   
+  
 
   addTask() {
     const value = this.newTodoForm.value.todoItem
     this.taskList.push({ id: this.taskList.length, name: value })
+    window.localStorage.setItem('task', JSON.stringify(this.taskList))
     this.newTodoForm.reset();
     
   }
 
   removeTask(i: any) {
     this.taskList.splice(i, 1)
-    console.log(i);
+    window.localStorage.setItem('task', JSON.stringify(this.taskList))
     
   }
 
@@ -42,6 +44,11 @@ export class TodoComponent implements OnInit {
   
 
   ngOnInit(): void {
+    this.taskList = window.localStorage.getItem('task') ? JSON.parse(localStorage.getItem('task')) : []
   }
 
 }
+function todoItem(todoItem: any) {
+  throw new Error('Function not implemented.');
+}
+
