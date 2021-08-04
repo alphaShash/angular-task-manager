@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -7,16 +8,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent implements OnInit {
-  value = '';
   completed: boolean = false;
   taskList: any[] = []
+  newTodoForm = this.formBuilder.group({
+    todoItem: ''
+  })
+    
+  constructor(
+    private formBuilder: FormBuilder
+  ) { }
+  
 
-  addTask(value: string) {
-    this.taskList.push({ id: this.taskList.length, name: value }) 
+  addTask() {
+    const value = this.newTodoForm.value.todoItem
+    this.taskList.push({ id: this.taskList.length, name: value })
+    this.newTodoForm.reset();
+    
   }
 
-  removeTask(id: number) {
-    this.taskList= this.taskList.filter(value=>value.id!== id)
+  removeTask(i: any) {
+    this.taskList.splice(i, 1)
+    console.log(i);
+    
   }
 
   markDone(value: any) {
@@ -24,10 +37,9 @@ export class TodoComponent implements OnInit {
     value.completed === true ?
       this.taskList.push(this.taskList.splice(this.taskList.indexOf(value), 1)[0]) :
       this.taskList.unshift(this.taskList.splice(this.taskList.indexOf(value), 1)[0])
-
   }
   
-  constructor() { }
+  
 
   ngOnInit(): void {
   }
